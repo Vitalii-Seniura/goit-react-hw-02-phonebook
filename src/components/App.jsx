@@ -1,8 +1,9 @@
 import { GlobalStyle } from './GlobalStyle';
 import { Component } from 'react';
-import ContactForm from './contactForm';
-// import ContactList from './contactList';
-// import PropTypes from 'prop-types';
+import ContactForm from './ContactForm/contactForm';
+import ContactList from './ContactList/contactList';
+import PropTypes from 'prop-types';
+import Filter from './Filter/filter';
 
 export class App extends Component {
   state = {
@@ -13,31 +14,51 @@ export class App extends Component {
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
     filter: '',
-    name: '',
-    number: '',
+  };
+
+  addContactList = data => {
+    const searchName = data.name.toLowerCase();
+    this.state.contacts.find(
+      contact => contact.name.toLowerCase() === searchName
+    )
+      ? alert('contact is already in contacts')
+      : this.setState(prevState => ({
+          contacts: [...prevState.contacts, data],
+        }));
+  };
+
+  handleDelete = contId => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(({ id }) => id !== contId),
+    }));
+  };
+
+  handleFindChange = evt => {
+    this.setState({
+      filter: evt.target.value,
+    });
   };
 
   render() {
+    const filterContact = this.state.contacts.filter(contacts =>
+      contacts.name.toLowerCase().includes(this.state.filter.toLowerCase())
+    );
     return (
-      <div
-      // style={{
-      //   height: '100vh',
-      //   display: 'flex',
-      //   justifyContent: 'center',
-      //   alignItems: 'center',
-      //   fontSize: 40,
-      //   color: '#010101',
-      // }}
-      >
-        <ContactForm />
-        {/* <ContactList /> */}
+      <div>
+        <h1>Phonebook</h1>
+        <ContactForm onSubmit={this.addContactList} />
+        <h2>Contacts</h2>
+        <Filter value={this.state.filter} onChange={this.handleFindChange} />
+        <ContactList
+          contacts={filterContact}
+          onLeaveFeedback={this.handleDelete}
+        />
         <GlobalStyle />
       </div>
     );
   }
 }
 
-// App.propTypes = {
-//   state: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-//   filter: PropTypes.string.isRequired,
-// };
+App.propTypes = {
+  state: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+};

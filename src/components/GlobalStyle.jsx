@@ -3,6 +3,8 @@ import 'modern-normalize';
 
 export const GlobalStyle = createGlobalStyle`
   body {
+    padding-top: 40px;
+    padding-left: 40px;
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
       'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -21,5 +23,15 @@ export const GlobalStyle = createGlobalStyle`
     padding: 0;
     margin: 0;
     list-style: none;
+  }
+
+  h1 {
+    font-size: 45px;
+  }
+
+  h2 {
+    font-size: 35px;
+    margin-top:25px;
+    margin-bottom:25px;
   }
 `;
